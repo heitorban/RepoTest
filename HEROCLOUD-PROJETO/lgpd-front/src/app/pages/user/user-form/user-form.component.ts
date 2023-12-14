@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {UserService} from "../user.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { UserService } from "../user.service";
+import { HttpClient } from '@angular/common/http';
 
 export const GENDERS = [
-  {label: 'Homem', value: 'male'},
-  {label: 'Mulher', value: 'feme'},
-  {label: 'Outro', value: 'other'}
+  { label: 'Homem', value: 'male' },
+  { label: 'Mulher', value: 'feme' },
+  { label: 'Outro', value: 'other' }
 ];
 @Component({
   selector: 'app-user-form',
@@ -67,13 +68,14 @@ export class UserFormComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private http: HttpClient
   ) {
 
     this.route.queryParams.subscribe(async (params: any) => {
       if (params.id !== undefined && params.id !== null) {
         this.user = await this.userService.get<any>({
-          url: `http://localhost:8090/api/users/${params.id}`,
+          url: `http://localhost:3000/users/${params.id}`,
           params: {
           }
         });
@@ -88,7 +90,7 @@ export class UserFormComponent {
     if (this.form.valid) {
       if (this.model?.id !== undefined && this.model?.id !== null) {
         this.user = await this.userService.put<any>({
-          url: `http://localhost:8090/api/users/${this.model?.id}`,
+          url: `http://localhost:3000/users/${this.model?.id}`,
           params: {
           },
           data: this.model
@@ -96,13 +98,13 @@ export class UserFormComponent {
       } else {
         delete this.model?.id;
         await this.userService.post<any>({
-          url: `http://localhost:8090/api/users`,
+          url: `http://localhost:3000/users`,
           params: {
           },
           data: this.model
         });
       }
     }
-    await this.router.navigate(['/']);
+    await this.router.navigate(['/users']);
   }
 }
