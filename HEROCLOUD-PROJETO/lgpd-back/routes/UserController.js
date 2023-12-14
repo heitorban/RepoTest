@@ -20,12 +20,12 @@ router.get("/getAllUsers", async function(req,res){
 });
 
 router.get("/user/:id", async function(req,res){
-    const allUsers = await UserService.getUSerById(req.params.id);
+    const user = await UserService.getUSerById(req.params.id);
     return res.status(200).json(user);
 });
 
 router.delete("/deleteUser/:id", async function(req,res){
-    const allUsers = await UserService.deleUSerById(req.params.id);
+    const user = await UserService.deleUSerById(req.params.id);
     return res.status(200).json(user);
 });
 
